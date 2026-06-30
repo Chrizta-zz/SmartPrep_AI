@@ -1,5 +1,17 @@
 import streamlit as st
 
+if st.session_state.get("logged_in"):
+
+    user = st.session_state["user"]
+
+    st.sidebar.success(f"👋 {user['full_name']}")
+
+    if st.sidebar.button("🚪 Logout"):
+
+        st.session_state.clear()
+
+        st.rerun()
+
 st.set_page_config(
     page_title="SmartPrep AI",
     page_icon="🎓",

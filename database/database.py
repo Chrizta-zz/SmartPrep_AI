@@ -26,4 +26,28 @@ def create_tables():
     conn.close()
 
 
+def create_study_plan_table():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS study_plans(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        subject TEXT,
+        confidence TEXT,
+        exam_date TEXT,
+        study_hours INTEGER,
+        study_plan TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# Create all tables
 create_tables()
+create_study_plan_table()

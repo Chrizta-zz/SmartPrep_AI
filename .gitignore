@@ -14,6 +14,8 @@ __pycache__/
 # VS Code
 .vscode/
 
+.env
+
 # OS files
 .DS_Store
 Thumbs.db
