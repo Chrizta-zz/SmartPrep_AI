@@ -1,35 +1,37 @@
-from PyPDF2 import PdfReader
+import PyPDF2
 from docx import Document
-import os
 
 
-def load_document(uploaded_file):
-    """
-    Extract text from PDF, DOCX, or TXT files.
-    """
+def load_pdf_text(uploaded_file):
+    reader = PyPDF2.PdfReader(uploaded_file)
 
-    file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+    text = ""
+    for page in reader.pages:
+        page_text = page.extract_text()
+        if page_text:
+            text += page_text + "\n"
 
-    # PDF
-    if file_extension == ".pdf":
-        reader = PdfReader(uploaded_file)
-        text = ""
+    return text
 
-        for page in reader.pages:
-            page_text = page.extract_text()
-            if page_text:
-                text += page_text + "\n"
 
-        return text
+def load_file_text(uploaded_file, filename):
 
-    # DOCX
-    elif file_extension == ".docx":
+    file_extension = filename.lower().split(".")[-1]
+
+    if file_extension == "pdf":
+        return load_pdf_text(uploaded_file)
+
+    elif file_extension == "docx":
         doc = Document(uploaded_file)
-        return "\n".join([para.text for para in doc.paragraphs])
+        return "\n".join([p.text for p in doc.paragraphs])
 
-    # TXT
-    elif file_extension == ".txt":
+    elif file_extension == "txt":
         return uploaded_file.read().decode("utf-8")
 
     else:
-        raise ValueError("Unsupported file type.")
+        raise ValueError("Unsupported file type")
+
+
+# ✅ ADD THIS WRAPPER (IMPORTANT)
+def load_document(uploaded_file, filename):
+    return load_file_text(uploaded_file, filename)
