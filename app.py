@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.ui_theme import apply_theme, page_header, section_title, divider
 
 if st.session_state.get("logged_in"):
 
@@ -18,12 +19,11 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🎓 SmartPrep AI")
-st.caption("Multi-Agent Exam Preparation Assistant")
+page_header("SmartPrep AI", "Multi-Agent Exam Preparation Assistant", "🎓")
 
-st.divider()
+divider()
 
-st.header("📊 Dashboard")
+section_title("Dashboard", "📊")
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -32,17 +32,17 @@ col2.metric("Study Hours", "24")
 col3.metric("Quiz Score", "82%")
 col4.metric("Progress", "65%")
 
-st.divider()
+divider()
 
-st.subheader("📅 Today's Study Plan")
+section_title("Today's Study Plan", "📅")
 
 st.success("✔ Python - 2 Hours")
 st.info("✔ Artificial Intelligence - 1.5 Hours")
 st.warning("✔ Cloud Computing - 1 Hour")
 
-st.divider()
+divider()
 
-st.subheader("🔥 Quick Actions")
+section_title("Quick Actions", "🔥")
 
 c1, c2, c3 = st.columns(3)
 

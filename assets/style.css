@@ -1,0 +1,358 @@
+:root {
+    --bg-primary: #0f1117;
+    --bg-surface: #1a1d2e;
+    --bg-hover: #1f2235;
+    --accent-teal: #00c9b1;
+    --accent-purple: #8b5cf6;
+    --accent-blue: #38bdf8;
+    --accent-green: #34d399;
+    --accent-orange: #fb923c;
+    --text-primary: #ffffff;
+    --text-secondary: #c8cfe8;
+    --text-label: #94a3b8;
+    --border: rgba(139, 92, 246, 0.25);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --transition: all 0.25s ease;
+}
+
+.stApp {
+    background-color: var(--bg-primary) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+html,
+body,
+[class*="css"] {
+    font-family: 'Inter', sans-serif !important;
+}
+
+#MainMenu,
+footer,
+header {
+    visibility: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-purple);
+    border-radius: 3px;
+}
+
+[data-testid="stSidebar"] {
+    background-color: var(--bg-surface) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+[data-testid="stSidebar"] .stButton>button {
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple)) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--radius-sm) !important;
+    font-weight: 700 !important;
+    width: 100% !important;
+    transition: var(--transition) !important;
+}
+
+[data-testid="stSidebar"] .stButton>button:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+[data-testid="stSidebar"] a {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+}
+
+[data-testid="stSidebar"] a:hover {
+    color: var(--accent-teal) !important;
+}
+
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] p {
+    color: var(--text-secondary) !important;
+}
+
+h1 {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.3px !important;
+}
+
+h2 {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+}
+
+h3 {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+p,
+li {
+    color: var(--text-secondary) !important;
+    line-height: 1.7 !important;
+}
+
+.stMarkdown p {
+    color: var(--text-secondary) !important;
+}
+
+label,
+.stSelectbox label,
+.stTextInput label,
+.stTextArea label,
+.stSlider label,
+.stNumberInput label {
+    color: var(--text-label) !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.4px !important;
+}
+
+[data-testid="stMetric"] {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 1.2rem 1.4rem !important;
+    transition: var(--transition) !important;
+}
+
+[data-testid="stMetric"]:hover {
+    background-color: var(--bg-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+[data-testid="stMetricLabel"]>div {
+    color: var(--text-label) !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+[data-testid="stMetricValue"]>div {
+    color: var(--accent-teal) !important;
+    font-size: 1.9rem !important;
+    font-weight: 800 !important;
+}
+
+.stButton>button {
+    background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-purple) 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 0.5rem 1.5rem !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.3px !important;
+    transition: var(--transition) !important;
+}
+
+.stButton>button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 201, 177, 0.35) !important;
+    opacity: 0.9 !important;
+}
+
+.stButton>button:active {
+    transform: translateY(0) !important;
+}
+
+.stTextInput>div>div>input,
+.stTextArea>div>div>textarea,
+.stNumberInput>div>div>input {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #ffffff !important;
+    font-size: 0.95rem !important;
+    transition: var(--transition) !important;
+}
+
+.stTextInput>div>div>input:focus,
+.stTextArea>div>div>textarea:focus {
+    border-color: var(--accent-teal) !important;
+    box-shadow: 0 0 0 3px rgba(0, 201, 177, 0.15) !important;
+}
+
+.stTextInput>div>div>input::placeholder,
+.stTextArea>div>div>textarea::placeholder {
+    color: #5a6380 !important;
+}
+
+[data-baseweb="select"]>div:first-child {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #ffffff !important;
+}
+
+[data-baseweb="select"] span {
+    color: #ffffff !important;
+}
+
+.stSelectbox [data-testid="stMarkdownContainer"] p {
+    color: #ffffff !important;
+}
+
+[data-baseweb="popover"] {
+    background-color: var(--bg-surface) !important;
+}
+
+[data-baseweb="menu"] {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+[role="option"] {
+    color: var(--text-secondary) !important;
+    background-color: transparent !important;
+}
+
+[role="option"]:hover {
+    background-color: var(--bg-hover) !important;
+    color: #ffffff !important;
+}
+
+.stSlider [data-baseweb="slider"] [role="slider"] {
+    background-color: var(--accent-teal) !important;
+}
+
+[data-testid="stAlert"] {
+    border-radius: var(--radius-sm) !important;
+}
+
+div[data-testid="stSuccess"] {
+    background: rgba(52, 211, 153, 0.12) !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #6ee7b7 !important;
+}
+
+div[data-testid="stInfo"] {
+    background: rgba(56, 189, 248, 0.12) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #bae6fd !important;
+}
+
+div[data-testid="stWarning"] {
+    background: rgba(251, 146, 60, 0.12) !important;
+    border: 1px solid rgba(251, 146, 60, 0.35) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #fed7aa !important;
+}
+
+div[data-testid="stError"] {
+    background: rgba(248, 113, 113, 0.12) !important;
+    border: 1px solid rgba(248, 113, 113, 0.35) !important;
+    border-radius: var(--radius-sm) !important;
+    color: #fecaca !important;
+}
+
+[data-testid="stDataFrame"] {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    overflow: hidden;
+}
+
+hr {
+    border: none !important;
+    border-top: 1px solid rgba(139, 92, 246, 0.2) !important;
+    margin: 1.5rem 0 !important;
+}
+
+.stSpinner>div {
+    border-color: var(--accent-teal) transparent transparent transparent !important;
+}
+
+.sp-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.sp-card:hover {
+    background-color: var(--bg-hover);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+
+.sp-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.sp-badge-teal {
+    background: rgba(0, 201, 177, 0.15);
+    color: var(--accent-teal);
+}
+
+.sp-badge-purple {
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+}
+
+.sp-badge-green {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--accent-green);
+}
+
+.sp-badge-orange {
+    background: rgba(251, 146, 60, 0.15);
+    color: var(--accent-orange);
+}
+
+.sp-hero {
+    background: linear-gradient(135deg, rgba(0, 201, 177, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 20px;
+    padding: 2.2rem 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sp-card,
+[data-testid="stMetric"],
+.stButton>button {
+    animation: fadeInUp 0.3s ease both;
+}
+
+.main .block-container {
+    padding-top: 2rem !important;
+    max-width: 1100px !important;
+}

@@ -3,18 +3,22 @@ from datetime import date
 
 from agents.planner_agent import generate_study_plan
 from utils.auth import require_login
+from utils.ui_theme import page_header, section_title, ai_plan_card
 
 require_login()
 
 st.set_page_config(page_title="Study Planner", page_icon="📅")
 
-st.title("📅 SmartPrep AI - Smart Study Planner")
-st.write("Generate an AI-powered personalized study plan.")
+page_header(
+    "Smart Study Planner",
+    "Generate an AI-powered personalized study plan.",
+    "📅"
+)
 
 # -------------------------------
 # STUDENT INFO
 # -------------------------------
-st.header("🎓 Student Information")
+section_title("Student Information", "🎓")
 
 education_level = st.selectbox(
     "Education Level",
@@ -34,34 +38,57 @@ course = st.text_input("Class / Course")
 # -------------------------------
 # PLANNING
 # -------------------------------
-st.header("📅 Planning")
+section_title("Planning", "📅")
 
-exam_date = st.date_input("Exam Date", min_value=date.today())
+exam_date = st.date_input(
+    "Exam Date",
+    min_value=date.today()
+)
 
-study_hours = st.slider("Study Hours Per Day", 1, 12, 4)
+study_hours = st.slider(
+    "Study Hours Per Day",
+    1,
+    12,
+    4
+)
 
 preferred_time = st.selectbox(
     "Preferred Study Time",
-    ["Morning", "Afternoon", "Evening", "Night", "No Preference"]
+    [
+        "Morning",
+        "Afternoon",
+        "Evening",
+        "Night",
+        "No Preference"
+    ]
 )
 
 today = date.today()
+
 remaining_days = (exam_date - today).days
 available_hours = remaining_days * study_hours
 
 st.info(f"""
-📅 Today: **{today}**  
-🎯 Exam Date: **{exam_date}**  
-⏳ Days Left: **{remaining_days}**  
-📖 Total Hours: **{available_hours}**
+📅 Today: **{today}**
+
+🎯 Exam Date: **{exam_date}**
+
+⏳ Days Left: **{remaining_days}**
+
+📖 Total Study Hours: **{available_hours}**
 """)
 
 # -------------------------------
 # SUBJECTS
 # -------------------------------
-st.header("📚 Subjects")
+section_title("Subjects", "📚")
 
-number_of_subjects = st.number_input("Number of Subjects", 1, 10, 1)
+number_of_subjects = st.number_input(
+    "Number of Subjects",
+    min_value=1,
+    max_value=10,
+    value=1
+)
 
 subjects = []
 
@@ -69,11 +96,18 @@ for i in range(number_of_subjects):
 
     st.subheader(f"Subject {i+1}")
 
-    subject_name = st.text_input("Subject Name", key=f"subject_{i}")
+    subject_name = st.text_input(
+        "Subject Name",
+        key=f"subject_{i}"
+    )
 
     scope = st.selectbox(
         "Study Scope",
-        ["Entire Subject", "Selected Chapters", "Specific Topics"],
+        [
+            "Entire Subject",
+            "Selected Chapters",
+            "Specific Topics"
+        ],
         key=f"scope_{i}"
     )
 
@@ -81,33 +115,58 @@ for i in range(number_of_subjects):
     topics = ""
 
     if scope == "Selected Chapters":
-        chapters = st.text_area("Chapters (one per line)", key=f"chapters_{i}")
+        chapters = st.text_area(
+            "Chapters (one per line)",
+            key=f"chapters_{i}"
+        )
 
     elif scope == "Specific Topics":
-        topics = st.text_area("Topics (one per line)", key=f"topics_{i}")
+        topics = st.text_area(
+            "Topics (one per line)",
+            key=f"topics_{i}"
+        )
 
-    confidence = st.select_slider("Confidence", ["Low", "Medium", "High"], value="Medium", key=f"conf_{i}")
-    difficulty = st.select_slider("Difficulty", ["Easy", "Medium", "Hard"], value="Medium", key=f"diff_{i}")
-    priority = st.select_slider("Priority", ["Low", "Medium", "High"], value="Medium", key=f"prio_{i}")
+    confidence = st.select_slider(
+        "Confidence",
+        ["Low", "Medium", "High"],
+        value="Medium",
+        key=f"conf_{i}"
+    )
 
-    subjects.append({
-        "subject": subject_name,
-        "scope": scope,
-        "chapters": chapters,
-        "topics": topics,
-        "confidence": confidence,
-        "difficulty": difficulty,
-        "priority": priority
-    })
+    difficulty = st.select_slider(
+        "Difficulty",
+        ["Easy", "Medium", "Hard"],
+        value="Medium",
+        key=f"diff_{i}"
+    )
+
+    priority = st.select_slider(
+        "Priority",
+        ["Low", "Medium", "High"],
+        value="Medium",
+        key=f"prio_{i}"
+    )
+
+    subjects.append(
+        {
+            "subject": subject_name,
+            "scope": scope,
+            "chapters": chapters,
+            "topics": topics,
+            "confidence": confidence,
+            "difficulty": difficulty,
+            "priority": priority
+        }
+    )
 
 st.divider()
 
 # -------------------------------
 # GENERATE PLAN
 # -------------------------------
+
 if st.button("🚀 Generate AI Study Plan"):
 
-    # validations
     if any(s["subject"].strip() == "" for s in subjects):
         st.error("Please enter all subject names.")
 
@@ -115,6 +174,7 @@ if st.button("🚀 Generate AI Study Plan"):
         st.error("Please select a future exam date.")
 
     else:
+
         with st.spinner("Generating your AI Study Plan..."):
 
             plan = generate_study_plan(
@@ -129,20 +189,10 @@ if st.button("🚀 Generate AI Study Plan"):
 
         st.success("Study Plan Generated Successfully!")
 
-        # -------------------------------
-        # OUTPUT SECTION (FIXED)
-        # -------------------------------
-        st.subheader("📊 Your AI Study Plan")
+        section_title("Your AI Study Plan", "📊")
 
-        # TIME INFO
-        st.markdown(f"""
-        🕒 **Time Slot:** {plan['time_slot']}  
-        ⏱ **Sessions:** {', '.join(plan['sessions'])}
-        """)
-
-        st.markdown("---")
-
-        # AI GENERATED OUTPUT
-        st.markdown("## 🤖 AI Generated Schedule")
-
-        st.markdown(plan["ai_plan"])
+        ai_plan_card(
+            plan["ai_plan"],
+            plan["time_slot"],
+            plan["sessions"]
+        )

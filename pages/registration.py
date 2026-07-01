@@ -1,7 +1,8 @@
 import streamlit as st
 from database.models import register_user
+from utils.ui_theme import page_header
 
-st.title("📝 Register")
+page_header("Register", "Create your SmartPrep AI account to get started.", "📝")
 
 name = st.text_input("Full Name")
 

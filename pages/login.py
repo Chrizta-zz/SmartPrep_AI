@@ -1,7 +1,8 @@
 import streamlit as st
 from database.models import login_user
+from utils.ui_theme import page_header
 
-st.title("🔐 Login")
+page_header("Login", "Welcome back! Sign in to continue.", "🔐")
 
 email = st.text_input("Email")
 
