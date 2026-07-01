@@ -1,23 +1,22 @@
-# Virtual Environment
+# Environment
 venv/
+.env
 
-# Python cache
+# Python
 __pycache__/
 *.pyc
 
-# Streamlit cache
+# Streamlit
 .streamlit/
 
-# Environment variables
-.env
+# Uploaded documents
+data/uploads/
 
-# VS Code
-.vscode/
+# Vector database
+data/vector_db/
 
-.env
-
-
-
+# Runtime files
+progress.json
 
 # OS files
 .DS_Store
