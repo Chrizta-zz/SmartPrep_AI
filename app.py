@@ -11,76 +11,90 @@ st.set_page_config(
 
 apply_theme()
 
-# -----------------------------
-# GUEST
-# -----------------------------
+# ----------------------------
+# BEFORE LOGIN
+# ----------------------------
 if not is_logged_in():
 
     pages = [
+
+        st.Page(
+            "pages/home.py",
+            title="Home",
+            icon="🏠",
+            default=True
+        ),
+
         st.Page(
             "pages/login.py",
             title="Login",
-            icon="🔐",
-            default=True
+            icon="🔐"
         ),
+
         st.Page(
             "pages/registration.py",
-            title="Registration",
+            title="Register",
             icon="📝"
-        )
+        ),
     ]
 
-# -----------------------------
+# ----------------------------
 # ADMIN
-# -----------------------------
+# ----------------------------
 elif is_admin():
 
-    st.sidebar.success(f"👋 {st.session_state['username']}")
-    st.sidebar.write("**Role:** Administrator")
-
-    if st.sidebar.button("🚪 Logout"):
-        st.session_state.clear()
-        st.rerun()
-
     pages = [
+
         st.Page(
             "pages/admin.py",
             title="Dashboard",
-            icon="🛠️",
+            icon="🛠",
             default=True
-        )
+        ),
+
     ]
 
-# -----------------------------
+# ----------------------------
 # USER
-# -----------------------------
+# ----------------------------
 else:
 
-    st.sidebar.success(f"👋 {st.session_state['username']}")
-    st.sidebar.write("**Role:** User")
-
-    if st.sidebar.button("🚪 Logout"):
-        st.session_state.clear()
-        st.rerun()
-
     pages = [
+
         st.Page(
-            "pages/planner.py",
-            title="AI Study Planner",
-            icon="📅",
+            "pages/dashboard.py",
+            title="Dashboard",
+            icon="🏠",
             default=True
         ),
+
+        st.Page(
+            "pages/planner.py",
+            title="Study Planner",
+            icon="📅"
+        ),
+
         st.Page(
             "pages/document_chat.py",
-            title="AI Document Tutor",
+            title="Document Tutor",
             icon="📄"
         ),
+
         st.Page(
             "pages/quiz.py",
-            title="AI Quiz Generator",
+            title="Quiz Generator",
             icon="🤖"
-        )
+        ),
+
     ]
+
+    with st.sidebar:
+
+        st.success(f"👋 {st.session_state['username']}")
+
+        if st.button("🚪 Logout", use_container_width=True):
+            st.session_state.clear()
+            st.rerun()
 
 pg = st.navigation(pages)
 pg.run()

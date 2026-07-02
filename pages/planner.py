@@ -7,6 +7,26 @@ from utils.ui_theme import page_header, section_title, ai_plan_card
 
 require_user()
 
+# from utils.navbar import top_navbar
+
+menu = None
+
+if menu == "🏠 Dashboard":
+    st.switch_page("pages/dashboard.py")
+
+elif menu == "📅 Study Planner":
+    st.switch_page("pages/planner.py")
+
+elif menu == "📄 Document Tutor":
+    st.switch_page("pages/document_chat.py")
+
+elif menu == "🤖 Quiz Generator":
+    st.switch_page("pages/quiz.py")
+
+elif menu == "🚪 Logout":
+    st.session_state.clear()
+    st.switch_page("pages/login.py")
+
 st.set_page_config(page_title="Study Planner", page_icon="📅")
 
 page_header(

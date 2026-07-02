@@ -1,50 +1,78 @@
 import streamlit as st
-
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from database.models import login_user
+
 from utils.auth import create_session
-from utils.ui_theme import page_header
+from utils.ui_theme import page_header, card
+
+
+
 
 page_header(
-    "Login",
-    "Welcome back! Sign in to SmartPrep AI.",
-    "🔐"
+    "Welcome Back",
+    "Sign in to continue your SmartPrep AI journey.",
+    "🎓"
 )
 
-email = st.text_input(
-    "Email"
-)
+# Center the login form
+left, center, right = st.columns([1, 2, 1])
 
-password = st.text_input(
-    "Password",
-    type="password"
-)
+with center:
 
-if st.button("Login", use_container_width=True):
+    card("""
+    <div style="text-align:center;">
+        <h2>🔐 Login</h2>
+        <p style="color:#9CA3AF;">
+            Enter your credentials to access SmartPrep AI.
+        </p>
+    </div>
+    """)
 
-    if not email or not password:
-        st.warning("Please enter both email and password.")
+    email = st.text_input(
+        "📧 Email",
+        placeholder="Enter your email"
+    )
 
-    else:
+    password = st.text_input(
+        "🔑 Password",
+        type="password",
+        placeholder="Enter your password"
+    )
 
-        user = login_user(email, password)
+    if st.button("🚀 Login", use_container_width=True):
 
-        if user:
-
-            create_session(
-                user["name"],
-                user["role"]
-            )
-
-            st.session_state["user"] = user
-
-            st.success(
-                f"Welcome, {user['name']}!"
-            )
-
-            st.rerun()
+        if not email or not password:
+            st.warning("Please enter both email and password.")
 
         else:
 
-            st.error(
-                "Invalid email or password."
-            )
+            user = login_user(email, password)
+
+            if user:
+
+                create_session(
+                    user["name"],
+                    user["role"]
+                )
+
+                st.session_state["user"] = user
+
+                st.success(
+                    f"Welcome back, {user['name']} 👋"
+                )
+
+                st.rerun()
+
+            else:
+
+                st.error(
+                    "Invalid email or password."
+                )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    st.caption(
+        "🎓 SmartPrep AI • Your AI-Powered Learning Assistant"
+    )

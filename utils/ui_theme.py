@@ -143,3 +143,186 @@ def card(content_html: str):
 def badge(text: str, color: str = "teal") -> str:
     """Return an HTML badge string. color: teal | purple | green | orange"""
     return f'<span class="sp-badge sp-badge-{color}">{text}</span>'
+
+# =====================================================
+# DASHBOARD METRIC CARD
+# =====================================================
+def dashboard_card(title, value, icon="📊"):
+
+    st.markdown(
+        f"""
+        <div class="dashboard-card">
+            <div class="dashboard-icon">{icon}</div>
+
+            <div class="dashboard-title">
+                {title}
+            </div>
+
+            <div class="dashboard-value">
+                {value}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# =====================================================
+# FEATURE CARD
+# =====================================================
+def feature_card(icon, title, description):
+
+    st.markdown(
+        f"""
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                {icon}
+            </div>
+
+            <div class="feature-title">
+                {title}
+            </div>
+
+            <div class="feature-description">
+                {description}
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# =====================================================
+# INFO CARD
+# =====================================================
+def info_card(title, body, icon="ℹ️"):
+
+    st.markdown(
+        f"""
+        <div class="info-card">
+
+            <div class="info-title">
+                {icon} {title}
+            </div>
+
+            <div class="info-body">
+                {body}
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# =====================================================
+# AI RESPONSE CARD
+# =====================================================
+def ai_response_card(text):
+
+    st.markdown(
+        f"""
+        <div class="ai-response-card">
+
+            <div class="ai-title">
+                🤖 SmartPrep AI
+            </div>
+
+            <hr>
+
+            <div class="ai-body">
+
+{text}
+
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# =====================================================
+# EMPTY STATE
+# =====================================================
+def empty_state(title, subtitle, icon="📂"):
+
+    st.markdown(
+        f"""
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                {icon}
+            </div>
+
+            <div class="empty-title">
+                {title}
+            </div>
+
+            <div class="empty-subtitle">
+                {subtitle}
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+def dashboard_card(title, value, icon):
+    st.markdown(
+        f"""
+        <div class="dashboard-card">
+            <div style="font-size:40px;">{icon}</div>
+            <h3>{title}</h3>
+            <h2>{value}</h2>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+def feature_card(icon, title, description):
+    st.markdown(
+        f"""
+        <div class="feature-card">
+            <div style="font-size:45px;">{icon}</div>
+            <h3>{title}</h3>
+            <p>{description}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+def info_card(title, text):
+    st.markdown(
+        f"""
+        <div class="info-card">
+            <h3>{title}</h3>
+            <p>{text}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )    
+
+
+# =====================================================
+# SECTION CARD
+# =====================================================
+def section_card(title, body):
+
+    st.markdown(
+        f"""
+        <div class="section-card">
+
+            <h3>{title}</h3>
+
+            <p>{body}</p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )    
+

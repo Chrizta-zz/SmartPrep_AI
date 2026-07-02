@@ -2,6 +2,8 @@
 venv/
 .env
 
+smartprep_env/
+
 # Python
 __pycache__/
 *.pyc
@@ -22,3 +24,5 @@ progress.json
 # OS files
 .DS_Store
 Thumbs.db
+
+env/
