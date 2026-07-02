@@ -1,25 +1,50 @@
 import streamlit as st
+
 from database.models import login_user
+from utils.auth import create_session
 from utils.ui_theme import page_header
 
-page_header("Login", "Welcome back! Sign in to continue.", "🔐")
+page_header(
+    "Login",
+    "Welcome back! Sign in to SmartPrep AI.",
+    "🔐"
+)
 
-email = st.text_input("Email")
+email = st.text_input(
+    "Email"
+)
 
 password = st.text_input(
     "Password",
     type="password"
 )
 
-if st.button("Login"):
+if st.button("Login", use_container_width=True):
 
-    user = login_user(email, password)
-
-    if user:
-        st.success(f"Welcome {user['full_name']}!")
-
-        st.session_state["logged_in"] = True
-        st.session_state["user"] = dict(user)
+    if not email or not password:
+        st.warning("Please enter both email and password.")
 
     else:
-        st.error("Invalid Email or Password")
+
+        user = login_user(email, password)
+
+        if user:
+
+            create_session(
+                user["name"],
+                user["role"]
+            )
+
+            st.session_state["user"] = user
+
+            st.success(
+                f"Welcome, {user['name']}!"
+            )
+
+            st.rerun()
+
+        else:
+
+            st.error(
+                "Invalid email or password."
+            )

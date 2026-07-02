@@ -1,4 +1,5 @@
 import sqlite3
+import bcrypt
 
 DATABASE_NAME = "database/smartprep.db"
 
@@ -9,7 +10,11 @@ def get_connection():
     return conn
 
 
+# -----------------------------
+# USERS TABLE
+# -----------------------------
 def create_tables():
+
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -18,7 +23,8 @@ def create_tables():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         full_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user'
     )
     """)
 
@@ -26,7 +32,11 @@ def create_tables():
     conn.close()
 
 
+# -----------------------------
+# STUDY PLAN TABLE
+# -----------------------------
 def create_study_plan_table():
+
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -48,6 +58,51 @@ def create_study_plan_table():
     conn.close()
 
 
-# Create all tables
+# -----------------------------
+# DEFAULT ADMIN
+# -----------------------------
+def create_default_admin():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email=?",
+        ("admin@smartprep.com",)
+    )
+
+    admin = cursor.fetchone()
+
+    if admin is None:
+
+        hashed_password = bcrypt.hashpw(
+            "admin123".encode(),
+            bcrypt.gensalt()
+        ).decode()
+
+        cursor.execute("""
+        INSERT INTO users(
+            full_name,
+            email,
+            password,
+            role
+        )
+        VALUES(?,?,?,?)
+        """, (
+            "Administrator",
+            "admin@smartprep.com",
+            hashed_password,
+            "admin"
+        ))
+
+        conn.commit()
+
+    conn.close()
+
+
+# -----------------------------
+# INITIALIZE DATABASE
+# -----------------------------
 create_tables()
 create_study_plan_table()
+create_default_admin()

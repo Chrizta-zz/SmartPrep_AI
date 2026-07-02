@@ -3,35 +3,51 @@ from docx import Document
 
 
 def load_pdf_text(uploaded_file):
+
     reader = PyPDF2.PdfReader(uploaded_file)
 
     text = ""
+
     for page in reader.pages:
+
         page_text = page.extract_text()
+
         if page_text:
             text += page_text + "\n"
 
     return text
 
 
-def load_file_text(uploaded_file, filename):
+def load_docx_text(uploaded_file):
 
-    file_extension = filename.lower().split(".")[-1]
+    doc = Document(uploaded_file)
 
-    if file_extension == "pdf":
+    text = ""
+
+    for para in doc.paragraphs:
+
+        text += para.text + "\n"
+
+    return text
+
+
+def load_txt_text(uploaded_file):
+
+    return uploaded_file.read().decode("utf-8")
+
+
+def load_document(uploaded_file):
+
+    filename = uploaded_file.name.lower()
+
+    if filename.endswith(".pdf"):
         return load_pdf_text(uploaded_file)
 
-    elif file_extension == "docx":
-        doc = Document(uploaded_file)
-        return "\n".join([p.text for p in doc.paragraphs])
+    elif filename.endswith(".docx"):
+        return load_docx_text(uploaded_file)
 
-    elif file_extension == "txt":
-        return uploaded_file.read().decode("utf-8")
+    elif filename.endswith(".txt"):
+        return load_txt_text(uploaded_file)
 
     else:
-        raise ValueError("Unsupported file type")
-
-
-# ✅ ADD THIS WRAPPER (IMPORTANT)
-def load_document(uploaded_file, filename):
-    return load_file_text(uploaded_file, filename)
+        raise Exception("Unsupported File Type")

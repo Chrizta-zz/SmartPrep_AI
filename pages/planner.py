@@ -2,10 +2,10 @@ import streamlit as st
 from datetime import date
 
 from agents.planner_agent import generate_study_plan
-from utils.auth import require_login
+from utils.auth import require_user
 from utils.ui_theme import page_header, section_title, ai_plan_card
 
-require_login()
+require_user()
 
 st.set_page_config(page_title="Study Planner", page_icon="📅")
 

@@ -6,10 +6,15 @@ from agents.quiz_agent import generate_quiz, generate_quiz_from_context
 from utils.quiz_parser import evaluate_quiz
 # from utils.vector_store import search_similar_chunks
 from utils.document_loader import load_pdf_text
+from utils.auth import require_user
 
-require_login()
+require_user()
 
 page_header("Quiz Generator", "Generate quizzes from your uploaded notes.", "📝")
+
+
+
+
 
 # =========================
 # MODE SWITCH

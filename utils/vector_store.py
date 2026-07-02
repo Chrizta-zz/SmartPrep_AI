@@ -1,50 +1,39 @@
-# utils/vector_store.py
-
-from sentence_transformers import SentenceTransformer
-import faiss
-import numpy as np
-
-# Load embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
-
-# Global storage
-index = None
-chunks_store = []
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
 
 
-def build_index(text_chunks):
-    """
-    Create FAISS index from PDF chunks
-    """
-    global index, chunks_store
-
-    chunks_store = text_chunks
-
-    embeddings = model.encode(text_chunks)
-
-    dim = embeddings.shape[1]
-    index = faiss.IndexFlatL2(dim)
-    index.add(np.array(embeddings))
-
-    return index
+# -----------------------------
+# EMBEDDING MODEL
+# -----------------------------
+embedding_model = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 
 
-def search_similar_chunks(query, k=5):
-    """
-    Semantic search using FAISS
-    """
-    global index, chunks_store
+# -----------------------------
+# SPLIT DOCUMENT
+# -----------------------------
+def chunk_text(text):
 
-    if index is None:
-        return []
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=800,
+        chunk_overlap=150
+    )
 
-    query_embedding = model.encode([query])
+    return splitter.split_text(text)
 
-    distances, indices = index.search(np.array(query_embedding), k)
 
-    results = []
-    for i in indices[0]:
-        if i < len(chunks_store):
-            results.append(chunks_store[i])
+# -----------------------------
+# CREATE VECTOR STORE
+# -----------------------------
+def create_vectorstore(text):
 
-    return results
+    chunks = chunk_text(text)
+
+    vectorstore = FAISS.from_texts(
+        chunks,
+        embedding_model
+    )
+
+    return vectorstore

@@ -1,19 +1,64 @@
 import streamlit as st
-import pandas as pd
-from database.database import get_connection
-from utils.ui_theme import page_header, section_title
 
-page_header("Database Viewer", "All registered SmartPrep AI users.", "🗄")
 
-conn = get_connection()
+from utils.auth import require_admin
 
-df = pd.read_sql_query(
-    "SELECT id, full_name, email FROM users",
-    conn
+require_admin()
+
+st.set_page_config(
+    page_title="Admin Dashboard",
+    page_icon="🛠️",
+    layout="wide"
 )
 
-conn.close()
+# -------------------------------
+# HEADER
+# -------------------------------
+st.title("🛠️ SmartPrep AI Admin Dashboard")
+st.write("Welcome, **Administrator** 👋")
 
-section_title("Registered Users", "👥")
+st.divider()
 
-st.dataframe(df, use_container_width=True)
+# -------------------------------
+# DASHBOARD METRICS
+# -------------------------------
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("👥 Total Users", "0")
+
+with col2:
+    st.metric("📅 Study Plans", "0")
+
+with col3:
+    st.metric("📄 Documents", "0")
+
+with col4:
+    st.metric("🤖 Quizzes", "0")
+
+st.divider()
+
+# -------------------------------
+# MANAGE USERS
+# -------------------------------
+st.subheader("👥 Manage Users")
+
+st.info("User management will appear here.")
+
+st.divider()
+
+# -------------------------------
+# ANALYTICS
+# -------------------------------
+st.subheader("📈 Analytics")
+
+st.info("Analytics charts will appear here.")
+
+st.divider()
+
+# -------------------------------
+# RECENT ACTIVITY
+# -------------------------------
+st.subheader("📝 Recent Activity")
+
+st.info("Recent activities will appear here.")

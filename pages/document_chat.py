@@ -1,11 +1,13 @@
 import streamlit as st
 
-from utils.auth import require_login
+from agents.document_agent import (
+    process_document,
+    ask_document
+)
+from utils.auth import require_user
 from utils.ui_theme import page_header
-from utils.document_loader import load_document
-from agents.document_agent import create_vectorstore, ask_document
 
-require_login()
+require_user()
 
 st.set_page_config(
     page_title="AI Document Tutor",
@@ -14,45 +16,102 @@ st.set_page_config(
 
 page_header(
     "AI Document Tutor",
-    "Upload your notes and ask questions.",
+    "Upload your notes and ask questions using AI + RAG.",
     "📄"
 )
 
+# -----------------------------
+# SESSION STATE
+# -----------------------------
+if "vectorstore" not in st.session_state:
+    st.session_state.vectorstore = None
+
+if "document_name" not in st.session_state:
+    st.session_state.document_name = None
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# -----------------------------
+# FILE UPLOAD
+# -----------------------------
 uploaded_file = st.file_uploader(
     "Upload PDF, DOCX or TXT",
     type=["pdf", "docx", "txt"]
 )
 
-if uploaded_file:
+if uploaded_file is not None:
 
-    # Read and create vector store only once
-    if "document_text" not in st.session_state:
+    # Only process once
+    if (
+        st.session_state.document_name
+        != uploaded_file.name
+    ):
 
-        with st.spinner("Reading and indexing document..."):
-            document_text = load_document(uploaded_file)
-            create_vectorstore(document_text)
+        with st.spinner("Processing document..."):
 
-            st.session_state["document_text"] = document_text
+            st.session_state.vectorstore = process_document(
+                uploaded_file
+            )
 
-        st.success("Document uploaded successfully!")
+            st.session_state.document_name = uploaded_file.name
+            st.session_state.messages = []
 
-    st.subheader("Document Preview")
+        st.success("✅ Document processed successfully!")
 
-    st.text_area(
-        "",
-        st.session_state["document_text"][:3000],
-        height=300
+# -----------------------------
+# CHAT
+# -----------------------------
+if st.session_state.vectorstore is not None:
+
+    st.subheader("💬 Ask Questions")
+
+    # Show previous chat
+    for msg in st.session_state.messages:
+
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+
+    # User question
+    question = st.chat_input(
+        "Ask anything from your document..."
     )
-
-    question = st.chat_input("Ask anything about your document...")
 
     if question:
 
-        with st.chat_message("user"):
-            st.write(question)
+        st.session_state.messages.append({
+            "role": "user",
+            "content": question
+        })
 
-        with st.spinner("Thinking..."):
-            answer = ask_document(question)
+        with st.chat_message("user"):
+            st.markdown(question)
 
         with st.chat_message("assistant"):
-            st.write(answer)
+
+            with st.spinner("Thinking..."):
+
+                answer = ask_document(
+                    st.session_state.vectorstore,
+                    question
+                )
+
+                st.markdown(answer)
+
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": answer
+        })
+
+# -----------------------------
+# RESET
+# -----------------------------
+if st.session_state.vectorstore is not None:
+
+    if st.button("🔄 Reset Document"):
+
+        st.session_state.vectorstore = None
+        st.session_state.document_name = None
+        st.session_state.messages = []
+
+        st.rerun()
